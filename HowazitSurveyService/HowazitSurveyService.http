@@ -1,0 +1,33 @@
+@HowazitSurveyService_HostAddress = https://localhost:7037
+
+POST {{HowazitSurveyService_HostAddress}}/api/surveys/responses
+Content-Type: application/json
+
+{
+  "surveyId": "post-purchase",
+  "clientId": "client-acme",
+  "responseId": "resp-123",
+  "responses": {
+    "nps_score": 9,
+    "satisfaction": "satisfied",
+    "custom_fields": {
+      "orderId": "ABC-123",
+      "comments": "Great experience"
+    }
+  },
+  "metadata": {
+    "timestamp": "2024-01-01T10:00:00Z",
+    "user_agent": "Mozilla/5.0",
+    "ip_address": "203.0.113.10"
+  }
+}
+
+###
+
+GET {{HowazitSurveyService_HostAddress}}/api/metrics/nps
+Accept: application/json
+
+###
+
+GET {{HowazitSurveyService_HostAddress}}/api/metrics/insights
+Accept: application/json

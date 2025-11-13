@@ -1,0 +1,32 @@
+services:
+  survey-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - BUILDKIT_INLINE_CACHE=1
+      cache_from:
+        - howazitsurveyservice-survey-api:latest
+    ports:
+      - "32770:8080"
+      - "32771:8081"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8080
+      - DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=0
+      - DOTNET_RUNNING_IN_CONTAINER=true
+      - ConnectionStrings__Sqlite=Data Source=HowazitSurveyService.db
+      - Encryption__Key=BfwyG6xXlVg4QpYt1kFZ7s8C9nVZ5e6W+3Lt4ExFYEc=
+      - Encryption__Iv=MTIzNDU2Nzg5MDEyMzQ1Ng==
+    restart: unless-stopped
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "curl -f http://localhost:8080/health || exit 1"
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
